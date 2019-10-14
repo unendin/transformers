@@ -24,7 +24,7 @@ import torch
 import torch.nn as nn
 from torch.nn import CrossEntropyLoss, MSELoss
 
-from .modeling_bert import BertEmbeddings, BertLayerNorm, BertModel, BertPreTrainedModel, gelu
+from .modeling_bert import BertEmbeddings, BertLayerNorm, BertLayerNormUnfused, BertModel, BertPreTrainedModel, gelu
 from .configuration_roberta import RobertaConfig
 from .file_utils import add_start_docstrings
 
@@ -258,7 +258,7 @@ class RobertaLMHead(nn.Module):
     def __init__(self, config):
         super(RobertaLMHead, self).__init__()
         self.dense = nn.Linear(config.hidden_size, config.hidden_size)
-        self.layer_norm = BertLayerNorm(config.hidden_size, eps=config.layer_norm_eps)
+        self.layer_norm = BertLayerNormUnfused(config.hidden_size, eps=config.layer_norm_eps)
 
         self.decoder = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
         self.bias = nn.Parameter(torch.zeros(config.vocab_size))

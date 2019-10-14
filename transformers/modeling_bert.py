@@ -142,8 +142,10 @@ ACT2FN = {"gelu": gelu, "relu": torch.nn.functional.relu, "swish": swish, "gelu_
 try:
     import apex
     BertLayerNorm = apex.normalization.FusedLayerNorm
+    BertLayerNormUnfused = torch.nn.LayerNorm
 except:
     BertLayerNorm = torch.nn.LayerNorm
+    BertLayerNormUnfused = torch.nn.LayerNorm
 
 class BertEmbeddings(nn.Module):
     """Construct the embeddings from word, position and token_type embeddings.
